@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.min.js"></script>
-	<script src="index.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
-	<link rel="stylesheet" href="style.css">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.min.js"></script>
+		<script src="index.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+		<link rel="stylesheet" href="style.css">
 	</head>
 <body>
 
 	<table class="ui selectable celled table">
 	  <thead>
 	    <tr>
+	      <th>ID</th>
 	      <th>Имя</th>
 	      <th>Фамилия</th>
 				<th>Номер телефона</th>
@@ -27,22 +28,22 @@
 
 		<div>
 			<div class="ui input">
-			  <input type="text" placeholder="Имя">
+			  <input type="text"  name="first_name" placeholder="Имя">
 			</div>
 			<div class="ui input">
-			  <input type="text" placeholder="Фамилия">
+			  <input type="text" name="last_name" placeholder="Фамилия">
 			</div>
 			<div class="ui input">
-			  <input type="text" placeholder="Почта">
+			  <input type="text" name="email" placeholder="Почта">
 			</div>
 			<div class="ui input">
-			  <input type="text" placeholder="Номер">
+			  <input type="text" name="phone" placeholder="Номер">
 			</div>
 		</div>
 
 		<br>
 
-		<button class="positive ui button">Добавить пользователя</button>
+		<button onclick="addItem()" class="positive ui button">Добавить пользователя</button>
 	</div>
 
 </body>

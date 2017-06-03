@@ -1,46 +1,31 @@
-var people = [
-   {
-     "first_name": "Вася",
-     "last_name": "Пупкин",
-     "phone": "+7 (999) 999-99-99",
-     "email": "moy@pochta.ru"
-   },
-   {
-     "first_name": "Mackeen",
-     "last_name": "Freeman",
-     "phone": "+7 (999) 111-11-11",
-     "email": "moy@pochta.ru"
-   },
-   {
-     "first_name": "Choma",
-     "last_name": "Andree",
-     "phone": "+7 (999) 222-22-33",
-     "email": "moy@pochta.ru"
-   },
-   {
-     "first_name": "Arnn",
-     "last_name": "Ronna",
-     "phone": "+7 (999) 333-33-33",
-     "email": "moy@pochta.ru"
-   },
-   {
-     "first_name": "Lofstead",
-     "last_name": "Ossie",
-     "phone": "+7 (999) 444-44-44",
-     "email": "moy@pochta.ru"
-   },
-   {
-     "first_name": "Sipler",
-     "last_name": "Paige",
-     "phone": "+7 (999) 555-55-55",
-     "email": "moy@pochta.ru"
-   }
-];
+function getUsers(){
+
+  $.ajax({
+    url: 'http://59300a1ca2a45f0011b0727f.mockapi.io/users'
+  })
+  .done(function(data) {
+    people = data;
+    createTable();
+  });
+
+}
 
 function removeItem(i){
+  var result = [];
+
   if (confirm('Вы действительно хотите удалить?')) {
     $('#item-' + i).remove();
+
+    // DELETE запрос к серверу
+    // <<< тут
+
+    people.forEach(function(elem, index){
+      if (i != index) result.push(elem);
+    });
+
   }
+
+  people = result;
 }
 
 function saveItem(index){
@@ -62,6 +47,28 @@ function saveItem(index){
 
     }
   }
+
+}
+
+function addItem(){
+
+  var first_name = $('div' + ' input[name="first_name"]').val();
+  var last_name = $('div'+ ' input[name="last_name"]').val();
+  var email = $('div'+ ' input[name="email"]').val();
+  var phone = $('div'+ ' input[name="phone"]').val();
+
+  var add =  {
+    "first_name": first_name,
+    "last_name": last_name,
+    "phone": email,
+    "email": phone
+  }
+
+  $('div input').val('');
+
+  people.push(add);
+
+  createTable();
 
 }
 
@@ -90,6 +97,7 @@ function createItem(man, i){
 
   var arr = [
     '<tr id="item-'+ i +'">',
+    '  <td>'+ i +'</td>',
     '  <td><input name="first_name" readonly value="'+ first_name +'"></td>',
     '  <td><input name="last_name" readonly value="'+ last_name +'"></td>',
     '  <td><input name="email" readonly value="'+ email +'"></td>',
@@ -108,6 +116,7 @@ function createItem(man, i){
 }
 
 function createTable(){
+  $('tbody > tr').remove();
   var count = people.length;
   for (var i = 0; i < count; i++) {
     var man = people[i];
@@ -117,6 +126,6 @@ function createTable(){
 
 $(document).ready(function(){
 
-	createTable();
+	getUsers();
 
 });
