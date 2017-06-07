@@ -13,3 +13,7 @@ input[readonly] {
   border: 0;
   background-color: transparent;
 }
+
+.error {
+    border-color: red!important;
+}

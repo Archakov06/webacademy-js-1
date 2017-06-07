@@ -16,16 +16,21 @@ function removeItem(i){
   if (confirm('Вы действительно хотите удалить?')) {
     $('#item-' + i).remove();
 
-    // DELETE запрос к серверу
-    // <<< тут
+     $.ajax({
+        url: 'http://59300a1ca2a45f0011b0727f.mockapi.io/users/' + i,
+        method: 'DELETE',
+      }).done(function() {
 
-    people.forEach(function(elem, index){
-      if (i != index) result.push(elem);
-    });
+        people.forEach(function(elem, index){
+          if (i != index) result.push(elem);
+        });
+
+        people = result;
+
+      });
 
   }
 
-  people = result;
 }
 
 function saveItem(index){
@@ -51,6 +56,11 @@ function saveItem(index){
 }
 
 function addItem(){
+
+  if ($('div input.error').length) {
+    alert('Одно из полей указано с ошибкой!');
+    return;
+  }
 
   var first_name = $('div' + ' input[name="first_name"]').val();
   var last_name = $('div'+ ' input[name="last_name"]').val();
@@ -88,20 +98,21 @@ function editItem(i){
   $('#edit-' + i).text(text);
 }
 
-function createItem(man, i){
+function createItem(man){
 
   var first_name = man.first_name;
   var last_name = man.last_name;
   var email = man.email;
   var phone = man.phone;
+  var i = man.id;
 
   var arr = [
     '<tr id="item-'+ i +'">',
     '  <td>'+ i +'</td>',
-    '  <td><input name="first_name" readonly value="'+ first_name +'"></td>',
-    '  <td><input name="last_name" readonly value="'+ last_name +'"></td>',
-    '  <td><input name="email" readonly value="'+ email +'"></td>',
-    '  <td><input name="phone" readonly value="'+ phone +'"></td>',
+    '  <td><input name="first_name" readonly value="'+ first_name +'"><span style="display:none">'+ first_name +'</span></td>',
+    '  <td><input name="last_name" readonly value="'+ last_name +'"><span style="display:none">'+ last_name +'</span></td>',
+    '  <td><input name="email" readonly value="'+ email +'"><span style="display:none">'+ email +'</span></td>',
+    '  <td><input name="phone" readonly value="'+ phone +'"><span style="display:none">'+ phone +'</span></td>',
     '  <td>',
     '    <button id="remove-'+ i +'" onClick="removeItem('+ i +')" class="ui inverted red button">Удалить</button>',
     '    <button id="edit-'+ i +'" onClick="editItem('+ i +')" class="ui inverted blue button">Редактировать</button>',
@@ -125,6 +136,34 @@ function createTable(){
 }
 
 $(document).ready(function(){
+
+  $('input[name="phone"]').mask("+7 (999) 999-9999");
+
+  $('input[name="email"]').validex({
+    pattern: 'email',
+    onValid: function(input, target) {
+      $(target).removeClass('error');
+    },
+    onNotValid: function(input, target) {
+      $(target).addClass('error');
+    }
+  });
+
+  $('#search-input').jSearch({
+	    selector  : 'table tbody',
+	    child : 'td span',
+	    Found : function(elem){
+	        $(elem).parent().parent().show();
+	    },
+	    NotFound : function(elem){
+          $(elem).parent().parent().hide();
+	    },
+      After: function(){
+        if (!$('#search-input').val()) {
+          $('table tbody tr').show();
+        }
+      }
+	});
 
 	getUsers();
 
